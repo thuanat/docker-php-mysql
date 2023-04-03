@@ -9,33 +9,21 @@
 <div class="container">
 <h1>Show databases in MySQL server</h1>
 <?php
+$servername = getenv("MYSQL_HOST");
+$username = getenv("MYSQL_USER");
+$password = getenv("MYSQL_PASSWORD");
+$dbname = getenv("MYSQL_DATABASE");
 
-getenv('MYSQL_DBHOST') ? $db_host=getenv('MYSQL_DBHOST') : $db_host="localhost";
-getenv('MYSQL_DBPORT') ? $db_port=getenv('MYSQL_DBPORT') : $db_port="3306";
-getenv('MYSQL_DBUSER') ? $db_user=getenv('MYSQL_DBUSER') : $db_user="root";
-getenv('MYSQL_DBPASS') ? $db_pass=getenv('MYSQL_DBPASS') : $db_pass="";
-getenv('MYSQL_DBNAME') ? $db_name=getenv('MYSQL_DBNAME') : $db_name="";
-
-if (strlen( $db_name ) === 0)
-  $conn = new mysqli("$db_host:$db_port", $db_user, $db_pass);
-else 
-  $conn = new mysqli("$db_host:$db_port", $db_user, $db_pass, $db_name);
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
-if ($conn->connect_error) 
-	die("Connection failed: " . $conn->connect_error);
- 
-if (!($result=mysqli_query($conn,'SHOW DATABASES')))
-    printf("Error: %s\n", mysqli_error($conn));
-
-echo "<h3>Databases</h3>";
-
-while($row = mysqli_fetch_row( $result ))
-    echo $row[0]."<br />";
-
-$result -> free_result();
-$conn->close();
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+echo "Connected successfully";
 ?>
+
 </div>
 </body>
 </html>
